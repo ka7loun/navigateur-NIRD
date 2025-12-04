@@ -1,4 +1,5 @@
-// Fonction pour injecter les règles CSS forçant les polices système
+// --- 1. MODE SOBRIÉTÉ (BLUR & PAUSE) ---
+
 function injectSystemFonts(enable) {
   const styleId = 'nird-font-style';
   let styleElement = document.getElementById(styleId);
@@ -8,140 +9,194 @@ function injectSystemFonts(enable) {
       styleElement = document.createElement('style');
       styleElement.id = styleId;
       styleElement.textContent = `
-        * {
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !important;
-        }
+        * { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important; }
       `;
       document.head.appendChild(styleElement);
     }
   } else {
-    if (styleElement) {
-      styleElement.remove();
-    }
+    if (styleElement) styleElement.remove();
   }
 }
 
-// Fonction pour neutraliser les vidéos et les GIFs
 function neutralizeMedia(enable) {
-  const selector = 'video, img[src$=".gif"], img[src$=".GIF"]';
-  
-  if (enable) {
-    const mediaElements = document.querySelectorAll(selector);
-    
-    mediaElements.forEach(element => {
-      // Vérifie si l'élément n'est pas déjà neutralisé
-      if (!element.dataset.nirdOriginalDisplay) {
-        // Sauvegarde l'état original
-        element.dataset.nirdOriginalDisplay = element.style.display || '';
-        
-        // Création du placeholder
-        const placeholder = document.createElement('div');
-        placeholder.className = 'nird-media-placeholder';
-        placeholder.style.cssText = `
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background-color: #f0f0f0;
-          border: 1px solid #ccc;
-          color: #555;
-          padding: 20px;
-          font-family: sans-serif;
-          font-size: 14px;
-          width: ${element.clientWidth || 300}px;
-          height: ${element.clientHeight || 150}px;
-          box-sizing: border-box;
-        `;
-        placeholder.textContent = 'Média neutralisé (NIRD)';
-        placeholder.dataset.nirdTargetId = Math.random().toString(36).substr(2, 9);
-        element.dataset.nirdPlaceholderId = placeholder.dataset.nirdTargetId;
+  // On cible vidéos et images (GIFs potentiels ou images lourdes)
+  const selector = 'video, iframe, img[src*=".gif"], img[src*=".GIF"]';
+  const elements = document.querySelectorAll(selector);
 
-        // Insère le placeholder et cache l'élément
-        element.parentNode.insertBefore(placeholder, element);
-        element.style.display = 'none';
+  elements.forEach(el => {
+    if (enable) {
+      if (el.classList.contains('nird-neutralized')) return;
+
+      // 1. Pause si c'est une vidéo
+      if (el.tagName === 'VIDEO') {
+        el.pause();
+        el.autoplay = false;
       }
-    });
-  } else {
-    // Restauration des médias
-    const placeholders = document.querySelectorAll('.nird-media-placeholder');
-    placeholders.forEach(placeholder => {
-      const targetId = placeholder.dataset.nirdTargetId;
-      // Recherche l'élément caché correspondant (approximation via structure ou ID si on l'avait stocké plus rigoureusement)
-      // Ici on va chercher l'élément qui a ce placeholder ID
-      // Note: querySelectorAll est plus sûr
-      const originalElement = document.querySelector(`[data-nird-placeholder-id="${targetId}"]`);
+
+      // 2. Ajouter le style de flou (Blur)
+      el.style.transition = 'filter 0.3s ease';
+      el.style.filter = 'blur(10px) grayscale(100%)';
+      el.classList.add('nird-neutralized');
+
+      // 3. Ajouter un overlay "Click to Play"
+      const wrapper = document.createElement('div');
+      wrapper.className = 'nird-wrapper';
+      wrapper.style.position = 'relative';
+      wrapper.style.display = 'inline-block';
       
-      if (originalElement) {
-        originalElement.style.display = originalElement.dataset.nirdOriginalDisplay;
-        delete originalElement.dataset.nirdOriginalDisplay;
-        delete originalElement.dataset.nirdPlaceholderId;
+      el.parentNode.insertBefore(wrapper, el);
+      wrapper.appendChild(el);
+
+      const overlay = document.createElement('div');
+      overlay.className = 'nird-overlay';
+      overlay.textContent = '▶️ Activer (NIRD)';
+      overlay.style.cssText = `
+        position: absolute;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-family: sans-serif;
+        cursor: pointer;
+        z-index: 9999;
+        pointer-events: auto;
+      `;
+
+      wrapper.appendChild(overlay);
+
+      const restore = (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        
+        el.style.filter = 'none';
+        if (el.tagName === 'VIDEO') el.play();
+        
+        overlay.remove();
+        el.classList.remove('nird-neutralized');
+      };
+
+      overlay.addEventListener('click', restore);
+      el.addEventListener('click', restore, { once: true });
+
+    } else {
+      if (el.classList.contains('nird-neutralized')) {
+        el.style.filter = 'none';
+        el.classList.remove('nird-neutralized');
+        
+        const wrapper = el.closest('.nird-wrapper');
+        if (wrapper) {
+          const overlay = wrapper.querySelector('.nird-overlay');
+          if (overlay) overlay.remove();
+        }
       }
-      placeholder.remove();
-    });
-  }
+    }
+  });
 }
 
-// Fonction principale pour appliquer les changements selon l'état
 function applySobrietyMode(isEnabled) {
   injectSystemFonts(isEnabled);
   neutralizeMedia(isEnabled);
 }
 
-// Écoute des messages venant du popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "toggleSobriety") {
     applySobrietyMode(request.state);
-    sendResponse({ status: "Mode updated" });
   }
 });
 
-// Initialisation : vérifie l'état au chargement de la page
 chrome.storage.local.get(['sobrietyMode'], (result) => {
-  if (result.sobrietyMode) {
-    applySobrietyMode(true);
-  }
+  if (result.sobrietyMode) applySobrietyMode(true);
 });
 
-// --- Bouclier de Confidentialité (Account 3) ---
 
-// Liste des paramètres de suivi à supprimer
+// --- 2. BOUCLIER URL (VERSION STRICTE) ---
+
 const TRACKING_PARAMS = [
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
   'gclid', 'fbclid', 'yclid', '_hsenc', '_hsmi', 'mc_cid', 'mc_eid'
 ];
 
-// Fonction pour nettoyer une URL
 function cleanUrl(url) {
   try {
     const urlObj = new URL(url);
     let cleaned = false;
-    
     TRACKING_PARAMS.forEach(param => {
       if (urlObj.searchParams.has(param)) {
         urlObj.searchParams.delete(param);
         cleaned = true;
       }
     });
-    
     return { url: urlObj.toString(), cleaned };
   } catch (e) {
     return { url, cleaned: false };
   }
 }
 
-// Interception des clics pour nettoyer les URLs
 document.addEventListener('click', (event) => {
   const link = event.target.closest('a');
+  
   if (link && link.href) {
     const { url, cleaned } = cleanUrl(link.href);
     
     if (cleaned) {
-      // Si l'URL a été nettoyée, on met à jour le href
-      link.href = url;
+      event.preventDefault();
+      event.stopPropagation();
       
-      // Envoi d'un message pour incrémenter le compteur
+      console.log("🚫 NIRD : Tracker bloqué !", link.href, "->", url);
       chrome.runtime.sendMessage({ action: "updateMetrics", trackers: 1 });
       
-      console.log("Lien nettoyé par NIRD :", url);
+      setTimeout(() => {
+        window.location.href = url;
+      }, 10);
     }
   }
 }, true);
+
+
+// --- 3. ÉCO-TAGGER (Calcul CO2) ---
+
+function calculateCarbonFootprint() {
+  // Récupère les ressources chargées (images, scripts, css...)
+  const resources = performance.getEntriesByType('resource');
+  let totalBytes = 0;
+
+  resources.forEach(resource => {
+    // transferSize inclut le header + body (compressé)
+    if (resource.transferSize > 0) {
+      totalBytes += resource.transferSize;
+    }
+  });
+
+  // Formule approximative : 1GB transféré = ~0.81 kWh * 475g CO2/kWh (mix moyen mondial) = ~385g CO2
+  // Pour simplifier : ~0.4g CO2 par MB (Source: The Shift Project / WebsiteCarbon)
+  const totalMB = totalBytes / (1024 * 1024);
+  const co2grams = totalMB * 0.4; // Facteur d'émission (très simplifié)
+
+  return co2grams;
+}
+
+// Envoie le CO2 calculé périodiquement ou au chargement
+function sendEcoStats() {
+  // Attendre que la page soit chargée pour avoir des données pertinentes
+  if (document.readyState === 'complete') {
+    const co2 = calculateCarbonFootprint();
+    if (co2 > 0) {
+      chrome.runtime.sendMessage({ 
+        action: "updateEcoScore", 
+        co2: co2 
+      }).catch(() => {}); // Ignorer erreur si popup fermé
+    }
+  }
+}
+
+// Écouteurs pour le chargement
+window.addEventListener('load', () => {
+  // Calcul initial
+  setTimeout(sendEcoStats, 2000);
+});
+
+// Recalcul périodique si l'utilisateur reste sur la page (SPA, chargement dynamique)
+setInterval(sendEcoStats, 10000);
