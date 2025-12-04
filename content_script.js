@@ -19,7 +19,6 @@ function injectSystemFonts(enable) {
 }
 
 function neutralizeMedia(enable) {
-  // On cible vidéos et images (GIFs potentiels ou images lourdes)
   const selector = 'video, iframe, img[src*=".gif"], img[src*=".GIF"]';
   const elements = document.querySelectorAll(selector);
 
@@ -27,18 +26,15 @@ function neutralizeMedia(enable) {
     if (enable) {
       if (el.classList.contains('nird-neutralized')) return;
 
-      // 1. Pause si c'est une vidéo
       if (el.tagName === 'VIDEO') {
         el.pause();
         el.autoplay = false;
       }
 
-      // 2. Ajouter le style de flou (Blur)
       el.style.transition = 'filter 0.3s ease';
       el.style.filter = 'blur(10px) grayscale(100%)';
       el.classList.add('nird-neutralized');
 
-      // 3. Ajouter un overlay "Click to Play"
       const wrapper = document.createElement('div');
       wrapper.className = 'nird-wrapper';
       wrapper.style.position = 'relative';
@@ -101,18 +97,51 @@ function applySobrietyMode(isEnabled) {
   neutralizeMedia(isEnabled);
 }
 
+// --- 2. MODE LECTURE ACCESSIBLE (Inclusion) ---
+function applyAccessibility(enable) {
+  const a11yStyleId = 'nird-a11y-style';
+  let styleElement = document.getElementById(a11yStyleId);
+
+  if (enable) {
+    if (!styleElement) {
+      styleElement = document.createElement('style');
+      styleElement.id = a11yStyleId;
+      styleElement.textContent = `
+        /* Police Dyslexie-friendly (sans-serif large) */
+        p, h1, h2, h3, h4, h5, h6, span, div, li, a {
+          font-family: "Comic Sans MS", "Chalkboard SE", "Comic Neue", sans-serif !important;
+          line-height: 1.8 !important;
+          letter-spacing: 0.05em !important;
+          word-spacing: 0.1em !important;
+        }
+        /* Augmentation du contraste textuel */
+        p, span, div, li {
+          color: #000 !important;
+        }
+      `;
+      document.head.appendChild(styleElement);
+    }
+  } else {
+    if (styleElement) styleElement.remove();
+  }
+}
+
+
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "toggleSobriety") {
     applySobrietyMode(request.state);
+  } else if (request.action === "toggleA11y") {
+    applyAccessibility(request.state);
   }
 });
 
-chrome.storage.local.get(['sobrietyMode'], (result) => {
+chrome.storage.local.get(['sobrietyMode', 'a11yMode'], (result) => {
   if (result.sobrietyMode) applySobrietyMode(true);
+  if (result.a11yMode) applyAccessibility(true);
 });
 
 
-// --- 2. BOUCLIER URL (VERSION STRICTE) ---
+// --- 3. BOUCLIER URL (VERSION STRICTE) ---
 
 const TRACKING_PARAMS = [
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
@@ -156,47 +185,38 @@ document.addEventListener('click', (event) => {
 }, true);
 
 
-// --- 3. ÉCO-TAGGER (Calcul CO2) ---
+// --- 4. ÉCO-TAGGER (Calcul CO2) ---
 
 function calculateCarbonFootprint() {
-  // Récupère les ressources chargées (images, scripts, css...)
   const resources = performance.getEntriesByType('resource');
   let totalBytes = 0;
 
   resources.forEach(resource => {
-    // transferSize inclut le header + body (compressé)
     if (resource.transferSize > 0) {
       totalBytes += resource.transferSize;
     }
   });
 
-  // Formule approximative : 1GB transféré = ~0.81 kWh * 475g CO2/kWh (mix moyen mondial) = ~385g CO2
-  // Pour simplifier : ~0.4g CO2 par MB (Source: The Shift Project / WebsiteCarbon)
   const totalMB = totalBytes / (1024 * 1024);
-  const co2grams = totalMB * 0.4; // Facteur d'émission (très simplifié)
+  const co2grams = totalMB * 0.4; 
 
   return co2grams;
 }
 
-// Envoie le CO2 calculé périodiquement ou au chargement
 function sendEcoStats() {
-  // Attendre que la page soit chargée pour avoir des données pertinentes
   if (document.readyState === 'complete') {
     const co2 = calculateCarbonFootprint();
     if (co2 > 0) {
       chrome.runtime.sendMessage({ 
         action: "updateEcoScore", 
         co2: co2 
-      }).catch(() => {}); // Ignorer erreur si popup fermé
+      }).catch(() => {});
     }
   }
 }
 
-// Écouteurs pour le chargement
 window.addEventListener('load', () => {
-  // Calcul initial
   setTimeout(sendEcoStats, 2000);
 });
 
-// Recalcul périodique si l'utilisateur reste sur la page (SPA, chargement dynamique)
 setInterval(sendEcoStats, 10000);
