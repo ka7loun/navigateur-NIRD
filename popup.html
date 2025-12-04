@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Le Navigateur NIRD</title>
+  <style>
+    body {
+      width: 320px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding: 16px;
+      margin: 0;
+      color: #333;
+    }
+    h1 {
+      font-size: 18px;
+      margin: 0 0 20px 0;
+      text-align: center;
+      color: #2c3e50;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .toggle-label {
+      font-weight: 600;
+    }
+    /* Switch Toggle Style */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+    
+    .metrics-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #555;
+    }
+    .metric-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+    .metric-value {
+      font-weight: bold;
+      color: #2196F3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Le Navigateur NIRD</h1>
+
+  <!-- Section Mode Sobriété -->
+  <div class="card">
+    <div class="toggle-container">
+      <span class="toggle-label">Mode Sobriété</span>
+      <label class="switch">
+        <input type="checkbox" id="sobrietyMode">
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Section Métriques -->
+  <div class="card">
+    <div class="metrics-title">Statistiques</div>
+    <div class="metric-row">
+      <span>Trackers nettoyés :</span>
+      <span class="metric-value" id="trackersCleaned">0</span>
+    </div>
+    <div class="metric-row">
+      <span>Éléments neutralisés :</span>
+      <span class="metric-value" id="mediaNeutralized">0</span>
+    </div>
+  </div>
+
+  <!-- Placeholder pour le script popup (non demandé mais nécessaire pour la logique) -->
+  <!-- <script src="popup.js"></script> -->
+</body>
+</html>
+
