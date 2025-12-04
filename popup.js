@@ -2,16 +2,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const sobrietyToggle = document.getElementById('sobrietyMode');
   const a11yToggle = document.getElementById('a11yMode');
   const focusToggle = document.getElementById('focusMode');
+  const hibernateToggle = document.getElementById('hibernateMode');
   const trackersElement = document.getElementById('trackersCleaned');
   const mediaElement = document.getElementById('mediaNeutralized');
   const co2Element = document.getElementById('pageCo2');
 
   // 1. Lire l'état initial depuis le storage
-  chrome.storage.local.get(['sobrietyMode', 'a11yMode', 'focusMode', 'trackersCleaned', 'mediaNeutralized', 'currentCo2'], (result) => {
+  chrome.storage.local.get(['sobrietyMode', 'a11yMode', 'focusMode', 'hibernateMode', 'trackersCleaned', 'mediaNeutralized', 'currentCo2'], (result) => {
     // État des toggles
     sobrietyToggle.checked = result.sobrietyMode || false;
     if(a11yToggle) a11yToggle.checked = result.a11yMode || false;
     if(focusToggle) focusToggle.checked = result.focusMode || false;
+    if(hibernateToggle) hibernateToggle.checked = result.hibernateMode || false;
 
     // Mise à jour des métriques
     trackersElement.textContent = result.trackersCleaned || 0;
@@ -57,6 +59,18 @@ document.addEventListener('DOMContentLoaded', () => {
           chrome.tabs.sendMessage(tabs[0].id, { action: "toggleFocus", state: isEnabled }).catch(() => {});
         }
       });
+    });
+  }
+
+  // 5. Mode Hibernation
+  if (hibernateToggle) {
+    hibernateToggle.addEventListener('change', () => {
+      const isEnabled = hibernateToggle.checked;
+      chrome.storage.local.set({ hibernateMode: isEnabled });
+      // Déclenche une vérification immédiate si activé
+      if (isEnabled) {
+        chrome.runtime.sendMessage({ action: "triggerHibernation" });
+      }
     });
   }
 });
