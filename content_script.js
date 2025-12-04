@@ -101,3 +101,47 @@ chrome.storage.local.get(['sobrietyMode'], (result) => {
   }
 });
 
+// --- Bouclier de Confidentialité (Account 3) ---
+
+// Liste des paramètres de suivi à supprimer
+const TRACKING_PARAMS = [
+  'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+  'gclid', 'fbclid', 'yclid', '_hsenc', '_hsmi', 'mc_cid', 'mc_eid'
+];
+
+// Fonction pour nettoyer une URL
+function cleanUrl(url) {
+  try {
+    const urlObj = new URL(url);
+    let cleaned = false;
+    
+    TRACKING_PARAMS.forEach(param => {
+      if (urlObj.searchParams.has(param)) {
+        urlObj.searchParams.delete(param);
+        cleaned = true;
+      }
+    });
+    
+    return { url: urlObj.toString(), cleaned };
+  } catch (e) {
+    return { url, cleaned: false };
+  }
+}
+
+// Interception des clics pour nettoyer les URLs
+document.addEventListener('click', (event) => {
+  const link = event.target.closest('a');
+  if (link && link.href) {
+    const { url, cleaned } = cleanUrl(link.href);
+    
+    if (cleaned) {
+      // Si l'URL a été nettoyée, on met à jour le href
+      link.href = url;
+      
+      // Envoi d'un message pour incrémenter le compteur
+      chrome.runtime.sendMessage({ action: "updateMetrics", trackers: 1 });
+      
+      console.log("Lien nettoyé par NIRD :", url);
+    }
+  }
+}, true);

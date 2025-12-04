@@ -18,11 +18,57 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
+// Liste des paramètres de suivi à supprimer (répliquée ici pour le Service Worker)
+const TRACKING_PARAMS = [
+  'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+  'gclid', 'fbclid', 'yclid', '_hsenc', '_hsmi', 'mc_cid', 'mc_eid'
+];
+
+function cleanUrl(url) {
+  try {
+    const urlObj = new URL(url);
+    let cleaned = false;
+    TRACKING_PARAMS.forEach(param => {
+      if (urlObj.searchParams.has(param)) {
+        urlObj.searchParams.delete(param);
+        cleaned = true;
+      }
+    });
+    return { url: urlObj.toString(), cleaned };
+  } catch (e) {
+    return { url, cleaned: false };
+  }
+}
+
 // Écoute des clics sur le menu contextuel
-chrome.contextMenus.onClicked.addListener((info, tab) => {
+chrome.contextMenus.onClicked.addListener(async (info, tab) => {
   if (info.menuItemId === "cleanAndCopyLink") {
-    console.log("Action Nettoyer et Copier le Lien NIRD déclenchée");
-    // La logique de nettoyage sera implémentée ici
+    let targetUrl = info.linkUrl || info.pageUrl;
+    
+    if (targetUrl) {
+      const { url: cleanedUrl, cleaned } = cleanUrl(targetUrl);
+      
+      // Copier dans le presse-papiers (nécessite l'exécution d'un script dans la page active pour utiliser l'API Clipboard)
+      // Note: En MV3, on peut utiliser navigator.clipboard dans le contexte de la page
+      if (tab && tab.id) {
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: (text) => {
+            navigator.clipboard.writeText(text).then(() => {
+              console.log('Lien nettoyé copié !');
+            });
+          },
+          args: [cleanedUrl]
+        });
+
+        if (cleaned) {
+           // Mise à jour des métriques si le lien a été nettoyé
+           chrome.storage.local.get(['trackersCleaned'], (result) => {
+             chrome.storage.local.set({ trackersCleaned: (result.trackersCleaned || 0) + 1 });
+           });
+        }
+      }
+    }
   }
 });
 
@@ -40,4 +86,3 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     });
   }
 });
-
