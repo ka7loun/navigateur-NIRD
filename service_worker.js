@@ -1,24 +1,18 @@
-// Initialisation des métriques lors de l'installation
+// Initialisation
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.get(['trackersCleaned', 'mediaNeutralized'], (result) => {
-    // Initialiser les compteurs s'ils n'existent pas
-    if (result.trackersCleaned === undefined) {
-      chrome.storage.local.set({ trackersCleaned: 0 });
-    }
-    if (result.mediaNeutralized === undefined) {
-      chrome.storage.local.set({ mediaNeutralized: 0 });
-    }
+    if (result.trackersCleaned === undefined) chrome.storage.local.set({ trackersCleaned: 0 });
+    if (result.mediaNeutralized === undefined) chrome.storage.local.set({ mediaNeutralized: 0 });
   });
 
-  // Création de l'entrée dans le menu contextuel
   chrome.contextMenus.create({
     id: "cleanAndCopyLink",
-    title: "Nettoyer et Copier le Lien NIRD",
+    title: "📋 Nettoyer et Copier le Lien (NIRD)",
     contexts: ["link", "page", "selection"]
   });
 });
 
-// Liste des paramètres de suivi à supprimer (répliquée ici pour le Service Worker)
+// Utilitaire de nettoyage (copié ici car le worker n'a pas accès au DOM/Content Script directement)
 const TRACKING_PARAMS = [
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
   'gclid', 'fbclid', 'yclid', '_hsenc', '_hsmi', 'mc_cid', 'mc_eid'
@@ -35,44 +29,45 @@ function cleanUrl(url) {
       }
     });
     return { url: urlObj.toString(), cleaned };
-  } catch (e) {
-    return { url, cleaned: false };
-  }
+  } catch (e) { return { url, cleaned: false }; }
 }
 
-// Écoute des clics sur le menu contextuel
-chrome.contextMenus.onClicked.addListener(async (info, tab) => {
+// Gestion du Menu Contextuel
+chrome.contextMenus.onClicked.addListener((info, tab) => {
   if (info.menuItemId === "cleanAndCopyLink") {
-    let targetUrl = info.linkUrl || info.pageUrl;
-    
+    // Priorité : Lien survolé > URL de la page > Texte sélectionné (si c'est une URL)
+    let targetUrl = info.linkUrl || info.pageUrl || info.selectionText;
+
     if (targetUrl) {
       const { url: cleanedUrl, cleaned } = cleanUrl(targetUrl);
-      
-      // Copier dans le presse-papiers (nécessite l'exécution d'un script dans la page active pour utiliser l'API Clipboard)
-      // Note: En MV3, on peut utiliser navigator.clipboard dans le contexte de la page
+
+      // Pour copier dans le presse-papier, on doit injecter un script dans l'onglet actif
       if (tab && tab.id) {
         chrome.scripting.executeScript({
           target: { tabId: tab.id },
           func: (text) => {
+            // Cette fonction s'exécute dans la page web
             navigator.clipboard.writeText(text).then(() => {
-              console.log('Lien nettoyé copié !');
-            });
+              // Feedback visuel simple (optionnel)
+              console.log('Lien NIRD copié :', text);
+              alert('✅ Lien nettoyé et copié !'); 
+            }).catch(err => console.error('Erreur copie:', err));
           },
           args: [cleanedUrl]
         });
 
+        // Mettre à jour les stats si on a effectivement nettoyé quelque chose
         if (cleaned) {
-           // Mise à jour des métriques si le lien a été nettoyé
-           chrome.storage.local.get(['trackersCleaned'], (result) => {
-             chrome.storage.local.set({ trackersCleaned: (result.trackersCleaned || 0) + 1 });
-           });
+          chrome.storage.local.get(['trackersCleaned'], (result) => {
+            chrome.storage.local.set({ trackersCleaned: (result.trackersCleaned || 0) + 1 });
+          });
         }
       }
     }
   }
 });
 
-// Écoute des messages pour la mise à jour des métriques (exemple d'utilisation future)
+// Gestion centralisée des messages
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "updateMetrics") {
     chrome.storage.local.get(['trackersCleaned', 'mediaNeutralized'], (result) => {
@@ -84,5 +79,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         mediaNeutralized: newMedia
       });
     });
+  } else if (request.action === "updateEcoScore") {
+    // Stocke le CO2 de la page active (pas cumulé globalement pour l'instant, juste pour l'affichage temps réel)
+    // On pourrait aussi le cumuler si on veut un "Total CO2 économisé"
+    chrome.storage.local.set({ currentCo2: request.co2 });
   }
 });

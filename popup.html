@@ -6,122 +6,188 @@
   <title>Le Navigateur NIRD</title>
   <style>
     body {
-      width: 320px;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      padding: 16px;
+      width: 340px;
+      font-family: 'Segoe UI', Roboto, Helvetica, sans-serif;
       margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
       color: #333;
     }
-    h1 {
-      font-size: 18px;
-      margin: 0 0 20px 0;
+    
+    header {
+      background: linear-gradient(135deg, #00b09b, #96c93d);
+      color: white;
+      padding: 20px;
       text-align: center;
-      color: #2c3e50;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
+    
+    h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    
+    .subtitle {
+      font-size: 12px;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    .container {
+      padding: 16px;
+    }
+
     .card {
       background: #fff;
-      border: 1px solid #eee;
-      border-radius: 8px;
-      padding: 12px;
+      border-radius: 12px;
+      padding: 16px;
       margin-bottom: 16px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      border: 1px solid #eee;
     }
-    .toggle-container {
+
+    /* Toggle Section */
+    .toggle-row {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    .toggle-label {
-      font-weight: 600;
+    
+    .toggle-text {
+      display: flex;
+      flex-direction: column;
     }
-    /* Switch Toggle Style */
+    
+    .toggle-title {
+      font-weight: 600;
+      font-size: 15px;
+    }
+    
+    .toggle-desc {
+      font-size: 11px;
+      color: #666;
+      margin-top: 2px;
+    }
+
+    /* Switch Style */
     .switch {
       position: relative;
       display: inline-block;
-      width: 50px;
-      height: 24px;
+      width: 52px;
+      height: 28px;
     }
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+    .switch input { opacity: 0; width: 0; height: 0; }
     .slider {
       position: absolute;
       cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background-color: #ccc;
       transition: .4s;
-      border-radius: 24px;
+      border-radius: 34px;
     }
     .slider:before {
       position: absolute;
       content: "";
-      height: 16px;
-      width: 16px;
+      height: 20px;
+      width: 20px;
       left: 4px;
       bottom: 4px;
       background-color: white;
       transition: .4s;
       border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     }
-    input:checked + .slider {
-      background-color: #2196F3;
-    }
-    input:checked + .slider:before {
-      transform: translateX(26px);
-    }
-    
+    input:checked + .slider { background-color: #00b09b; }
+    input:checked + .slider:before { transform: translateX(24px); }
+
+    /* Metrics Section */
     .metrics-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: #555;
+      font-size: 13px;
+      text-transform: uppercase;
+      color: #888;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
     }
-    .metric-row {
+
+    .metric-item {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 14px;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #f0f0f0;
     }
-    .metric-value {
-      font-weight: bold;
-      color: #2196F3;
+    .metric-item:last-child { border-bottom: none; }
+
+    .metric-label { font-size: 14px; display: flex; align-items: center; gap: 8px; }
+    .metric-value { 
+      font-weight: 700; 
+      color: #00b09b; 
+      font-size: 16px; 
+      background: #eafffa;
+      padding: 2px 8px;
+      border-radius: 10px;
+    }
+
+    /* CO2 Specific Style */
+    .co2-value {
+      color: #e74c3c;
+      background: #fdeaea;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 10px;
+      color: #aaa;
+      margin-top: 8px;
     }
   </style>
 </head>
 <body>
-  <h1>Le Navigateur NIRD</h1>
+  <header>
+    <h1>Le Navigateur NIRD</h1>
+    <div class="subtitle">Numérique Inclusif, Responsable, Durable</div>
+  </header>
 
-  <!-- Section Mode Sobriété -->
-  <div class="card">
-    <div class="toggle-container">
-      <span class="toggle-label">Mode Sobriété</span>
-      <label class="switch">
-        <input type="checkbox" id="sobrietyMode">
-        <span class="slider"></span>
-      </label>
+  <div class="container">
+    <!-- Mode Sobriété -->
+    <div class="card">
+      <div class="toggle-row">
+        <div class="toggle-text">
+          <span class="toggle-title">Mode Sobriété</span>
+          <span class="toggle-desc">Économise la bande passante & le CPU</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="sobrietyMode">
+          <span class="slider"></span>
+        </label>
+      </div>
     </div>
+
+    <!-- Statistiques -->
+    <div class="card">
+      <div class="metrics-title">Impact Écologique</div>
+      <div class="metric-item">
+        <span class="metric-label">🌍 CO2 Page Actuelle</span>
+        <span class="metric-value co2-value" id="pageCo2">0 g</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-label">🛡️ Trackers nettoyés</span>
+        <span class="metric-value" id="trackersCleaned">0</span>
+      </div>
+      <div class="metric-item">
+        <span class="metric-label">⚡ Éléments neutralisés</span>
+        <span class="metric-value" id="mediaNeutralized">0</span>
+      </div>
+    </div>
+
+    <footer>
+      Développé pour la Nuit de l'Info
+    </footer>
   </div>
 
-  <!-- Section Métriques -->
-  <div class="card">
-    <div class="metrics-title">Statistiques</div>
-    <div class="metric-row">
-      <span>Trackers nettoyés :</span>
-      <span class="metric-value" id="trackersCleaned">0</span>
-    </div>
-    <div class="metric-row">
-      <span>Éléments neutralisés :</span>
-      <span class="metric-value" id="mediaNeutralized">0</span>
-    </div>
-  </div>
-
-  <!-- Placeholder pour le script popup (non demandé mais nécessaire pour la logique) -->
   <script src="popup.js"></script>
 </body>
 </html>
-
