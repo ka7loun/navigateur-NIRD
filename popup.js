@@ -16,32 +16,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const NIRD_INFOS = {
     durabilite: {
-      title: "♻️ DURABILITÉ",
-      text: "Ce module réduit drastiquement la consommation de données et d'énergie en bloquant les ressources lourdes, prolongeant ainsi la vie de votre batterie et de votre appareil."
+      title: "♻️ PILIER : DURABILITÉ",
+      text: "POURQUOI ? Le chargement de polices tierces et de médias lourds est énergivore.\n\nSOLUTION NIRD : En bloquant ces éléments, nous réduisons la consommation de bande passante et l'effort CPU, prolongeant la durée de vie de votre matériel (lutte contre l'obsolescence programmée)."
     },
     inclusion: {
-      title: "🤝 INCLUSION",
-      text: "Rend le numérique accessible à tous. Ce mode adapte l'affichage pour faciliter la lecture aux personnes dyslexiques ou ayant des troubles visuels."
+      title: "🤝 PILIER : INCLUSION",
+      text: "POURQUOI ? Le web standard exclut souvent les personnes dyslexiques ou malvoyantes.\n\nSOLUTION NIRD : Ce mode adapte l'affichage (police, contraste) pour rendre l'information accessible à tous, garantissant l'égalité d'accès au savoir."
     },
     responsabilite: {
-      title: "⚖️ RESPONSABILITÉ",
-      text: "Protège votre attention et votre santé mentale en masquant les mécanismes addictifs (Shorts, fils infinis) conçus pour vous captiver."
+      title: "⚖️ PILIER : RESPONSABILITÉ",
+      text: "POURQUOI ? L'économie de l'attention exploite nos biais cognitifs pour nous captiver.\n\nSOLUTION NIRD : Le filtre bloque les mécanismes addictifs (Shorts, fils infinis) pour protéger votre santé mentale et favoriser une navigation consciente."
     },
     hibernation: {
-      title: "♻️ DURABILITÉ & SOBRIÉTÉ",
-      text: "Réduit l'empreinte mémoire du navigateur. En mettant en veille les onglets inutilisés, vous libérez de la RAM et économisez de l'énergie."
+      title: "♻️ PILIER : DURABILITÉ",
+      text: "POURQUOI ? Garder des onglets ouverts consomme inutilement de la RAM et de l'électricité.\n\nSOLUTION NIRD : L'hibernation automatique libère les ressources des onglets inactifs, réduisant l'empreinte énergétique globale de votre session."
     },
     co2: {
-      title: "🌍 ÉCO-TAGGER (INCLUSION)",
-      text: "Rend visible l'invisible. Chaque octet transféré consomme de l'énergie (réseau, serveurs). Ce chiffre vous sensibilise à l'empreinte carbone réelle de votre navigation."
+      title: "🌍 PILIER : INCLUSION & TRANSPARENCE",
+      text: "POURQUOI ? L'impact écologique du numérique est souvent invisible pour l'utilisateur.\n\nSOLUTION NIRD : Cet indicateur rend tangible le coût carbone de chaque page visitée, éduquant l'utilisateur à l'impact de ses clics."
     },
     trackers: {
-      title: "🛡️ RESPONSABILITÉ",
-      text: "Chaque tracker bloqué est une victoire pour votre vie privée. Moins de collecte de données = moins de serveurs de publicité sollicités = moins d'énergie gaspillée."
+      title: "🛡️ PILIER : RESPONSABILITÉ",
+      text: "POURQUOI ? Le traçage publicitaire viole la vie privée et consomme des ressources serveur.\n\nSOLUTION NIRD : En supprimant les mouchards (trackers), nous garantissons la souveraineté de vos données et allégeons le trafic réseau."
     },
     medias: {
-      title: "⚡ DURABILITÉ",
-      text: "Vidéos, GIFs et images lourdes consomment énormément de bande passante. En les bloquant par défaut, vous économisez directement de l'électricité et des données."
+      title: "⚡ PILIER : SOBRIÉTÉ (DURABILITÉ)",
+      text: "POURQUOI ? La vidéo et les images animées représentent la majorité du trafic web mondial.\n\nSOLUTION NIRD : Neutraliser ces éléments par défaut permet une navigation 'Low-Tech' respectueuse des limites planétaires."
     }
   };
 
@@ -51,7 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const type = btn.dataset.info;
       if (NIRD_INFOS[type]) {
         modalTitle.textContent = NIRD_INFOS[type].title;
-        modalText.textContent = NIRD_INFOS[type].text;
+        // On utilise innerHTML pour permettre les sauts de ligne avec \n remplacés par <br>
+        modalText.innerHTML = NIRD_INFOS[type].text.replace(/\n/g, '<br>');
         modal.classList.add('active');
       }
     });
