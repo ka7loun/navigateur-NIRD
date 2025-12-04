@@ -30,6 +30,18 @@ document.addEventListener('DOMContentLoaded', () => {
     hibernation: {
       title: "♻️ DURABILITÉ & SOBRIÉTÉ",
       text: "Réduit l'empreinte mémoire du navigateur. En mettant en veille les onglets inutilisés, vous libérez de la RAM et économisez de l'énergie."
+    },
+    co2: {
+      title: "🌍 ÉCO-TAGGER (INCLUSION)",
+      text: "Rend visible l'invisible. Chaque octet transféré consomme de l'énergie (réseau, serveurs). Ce chiffre vous sensibilise à l'empreinte carbone réelle de votre navigation."
+    },
+    trackers: {
+      title: "🛡️ RESPONSABILITÉ",
+      text: "Chaque tracker bloqué est une victoire pour votre vie privée. Moins de collecte de données = moins de serveurs de publicité sollicités = moins d'énergie gaspillée."
+    },
+    medias: {
+      title: "⚡ DURABILITÉ",
+      text: "Vidéos, GIFs et images lourdes consomment énormément de bande passante. En les bloquant par défaut, vous économisez directement de l'électricité et des données."
     }
   };
 
