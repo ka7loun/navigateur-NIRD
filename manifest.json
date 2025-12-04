@@ -7,7 +7,8 @@
     "storage",
     "scripting",
     "activeTab",
-    "contextMenus"
+    "contextMenus",
+    "alarms"
   ],
   "background": {
     "service_worker": "service_worker.js"
