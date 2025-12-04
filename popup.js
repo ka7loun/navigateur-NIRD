@@ -1,15 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
   const sobrietyToggle = document.getElementById('sobrietyMode');
   const a11yToggle = document.getElementById('a11yMode');
+  const focusToggle = document.getElementById('focusMode');
   const trackersElement = document.getElementById('trackersCleaned');
   const mediaElement = document.getElementById('mediaNeutralized');
   const co2Element = document.getElementById('pageCo2');
 
   // 1. Lire l'état initial depuis le storage
-  chrome.storage.local.get(['sobrietyMode', 'a11yMode', 'trackersCleaned', 'mediaNeutralized', 'currentCo2'], (result) => {
+  chrome.storage.local.get(['sobrietyMode', 'a11yMode', 'focusMode', 'trackersCleaned', 'mediaNeutralized', 'currentCo2'], (result) => {
     // État des toggles
     sobrietyToggle.checked = result.sobrietyMode || false;
     if(a11yToggle) a11yToggle.checked = result.a11yMode || false;
+    if(focusToggle) focusToggle.checked = result.focusMode || false;
 
     // Mise à jour des métriques
     trackersElement.textContent = result.trackersCleaned || 0;
@@ -40,6 +42,19 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (tabs[0] && tabs[0].id) {
           chrome.tabs.sendMessage(tabs[0].id, { action: "toggleA11y", state: isEnabled }).catch(() => {});
+        }
+      });
+    });
+  }
+
+  // 4. Mode Anti-Attention
+  if (focusToggle) {
+    focusToggle.addEventListener('change', () => {
+      const isEnabled = focusToggle.checked;
+      chrome.storage.local.set({ focusMode: isEnabled });
+      chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+        if (tabs[0] && tabs[0].id) {
+          chrome.tabs.sendMessage(tabs[0].id, { action: "toggleFocus", state: isEnabled }).catch(() => {});
         }
       });
     });
