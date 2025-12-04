@@ -126,22 +126,58 @@ function applyAccessibility(enable) {
   }
 }
 
+// --- 3. FILTRE ANTI-ATTENTION (Responsabilité) ---
+function applyFocusMode(enable) {
+  const focusStyleId = 'nird-focus-style';
+  let styleElement = document.getElementById(focusStyleId);
+
+  if (enable) {
+    if (!styleElement) {
+      styleElement = document.createElement('style');
+      styleElement.id = focusStyleId;
+      // Bloque YouTube Shorts, Recommandations, Facebook Reels, LinkedIn Feed pub
+      styleElement.textContent = `
+        /* YouTube */
+        ytd-rich-grid-renderer, ytd-reel-shelf-renderer, #secondary-inner, ytd-shorts { display: none !important; }
+        
+        /* Facebook */
+        div[role="feed"], div[aria-label="Reels"], div[aria-label="Stories"] { display: none !important; }
+        
+        /* LinkedIn */
+        .ad-banner-container, .right-rail, .feed-shared-update-v2__content { opacity: 0.5; }
+        
+        /* Instagram */
+        article div:nth-child(3) { display: none !important; } /* Commentaires */
+        
+        /* TikTok (Web) */
+        div[data-e2e="recommend-list-item-container"] { display: none !important; }
+      `;
+      document.head.appendChild(styleElement);
+    }
+  } else {
+    if (styleElement) styleElement.remove();
+  }
+}
+
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "toggleSobriety") {
     applySobrietyMode(request.state);
   } else if (request.action === "toggleA11y") {
     applyAccessibility(request.state);
+  } else if (request.action === "toggleFocus") {
+    applyFocusMode(request.state);
   }
 });
 
-chrome.storage.local.get(['sobrietyMode', 'a11yMode'], (result) => {
+chrome.storage.local.get(['sobrietyMode', 'a11yMode', 'focusMode'], (result) => {
   if (result.sobrietyMode) applySobrietyMode(true);
   if (result.a11yMode) applyAccessibility(true);
+  if (result.focusMode) applyFocusMode(true);
 });
 
 
-// --- 3. BOUCLIER URL (VERSION STRICTE) ---
+// --- 4. BOUCLIER URL (VERSION STRICTE) ---
 
 const TRACKING_PARAMS = [
   'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
@@ -185,7 +221,7 @@ document.addEventListener('click', (event) => {
 }, true);
 
 
-// --- 4. ÉCO-TAGGER (Calcul CO2) ---
+// --- 5. ÉCO-TAGGER (Calcul CO2) ---
 
 function calculateCarbonFootprint() {
   const resources = performance.getEntriesByType('resource');
