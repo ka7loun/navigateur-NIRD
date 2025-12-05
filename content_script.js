@@ -8,8 +8,12 @@ function injectSystemFonts(enable) {
     if (!styleElement) {
       styleElement = document.createElement('style');
       styleElement.id = styleId;
+      // On force toutes les polices à utiliser le système par défaut pour économiser le téléchargement de WebFonts
       styleElement.textContent = `
-        * { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important; }
+        @font-face { font-family: "NIRD-System"; src: local("Arial"); }
+        * { 
+          font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important; 
+        }
       `;
       document.head.appendChild(styleElement);
     }
@@ -18,11 +22,8 @@ function injectSystemFonts(enable) {
   }
 }
 
-// (Supprimé) function neutralizeMedia(enable) ...
-
 function applySobrietyMode(isEnabled) {
   injectSystemFonts(isEnabled);
-  // neutralizeMedia(isEnabled); // DÉSACTIVÉ
 }
 
 // --- 2. MODE LECTURE ACCESSIBLE (Inclusion) ---
