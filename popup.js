@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const hibernateToggle = document.getElementById('hibernateMode');
   
   const trackersElement = document.getElementById('trackersCleaned');
-  const mediaElement = document.getElementById('mediaNeutralized');
+  // const mediaElement = document.getElementById('mediaNeutralized');
   const co2Element = document.getElementById('pageCo2');
 
   // --- 1. LOGIQUE UI INFO NIRD (NEW) ---
@@ -42,10 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
     trackers: {
       title: "🛡️ PILIER : RESPONSABILITÉ",
       text: "POURQUOI ? Le traçage publicitaire viole la vie privée et consomme des ressources serveur.\n\nSOLUTION NIRD : En supprimant les mouchards (trackers), nous garantissons la souveraineté de vos données et allégeons le trafic réseau.\n\nCOMMENT L'UTILISER ? C'est automatique ! Ou faites Clic-Droit > 'Nettoyer et Copier' sur un lien.\n\nEXEMPLE : Un lien Amazon de 5 lignes devient un lien court et propre."
-    },
-    medias: {
-      title: "⚡ PILIER : SOBRIÉTÉ (DURABILITÉ)",
-      text: "POURQUOI ? La vidéo et les images animées représentent la majorité du trafic web mondial.\n\nSOLUTION NIRD : Neutraliser ces éléments par défaut permet une navigation 'Low-Tech' respectueuse des limites planétaires.\n\nCOMMENT L'UTILISER ? Ce compteur augmente quand le 'Mode Sobriété' bloque une vidéo.\n\nEXEMPLE : Si le chiffre monte à 5, vous avez économisé le chargement de 5 vidéos inutiles."
     }
   };
 
@@ -82,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(hibernateToggle) hibernateToggle.checked = result.hibernateMode || false;
 
     trackersElement.textContent = result.trackersCleaned || 0;
-    mediaElement.textContent = result.mediaNeutralized || 0;
+    // mediaElement.textContent = result.mediaNeutralized || 0;
     
     if (result.currentCo2) {
       co2Element.textContent = result.currentCo2.toFixed(3) + " g";

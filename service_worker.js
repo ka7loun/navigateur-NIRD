@@ -1,8 +1,7 @@
 // Initialisation
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.local.get(['trackersCleaned', 'mediaNeutralized'], (result) => {
+  chrome.storage.local.get(['trackersCleaned'], (result) => {
     if (result.trackersCleaned === undefined) chrome.storage.local.set({ trackersCleaned: 0 });
-    if (result.mediaNeutralized === undefined) chrome.storage.local.set({ mediaNeutralized: 0 });
   });
 
   chrome.contextMenus.create({
@@ -70,13 +69,11 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 // Gestion centralisée des messages
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "updateMetrics") {
-    chrome.storage.local.get(['trackersCleaned', 'mediaNeutralized'], (result) => {
+    chrome.storage.local.get(['trackersCleaned'], (result) => {
       const newTrackers = (result.trackersCleaned || 0) + (request.trackers || 0);
-      const newMedia = (result.mediaNeutralized || 0) + (request.media || 0);
       
       chrome.storage.local.set({
-        trackersCleaned: newTrackers,
-        mediaNeutralized: newMedia
+        trackersCleaned: newTrackers
       });
     });
   } else if (request.action === "updateEcoScore") {

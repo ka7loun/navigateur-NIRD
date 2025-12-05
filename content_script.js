@@ -1,4 +1,4 @@
-// --- 1. MODE SOBRIÉTÉ (BLUR & PAUSE) ---
+// --- 1. MODE SOBRIÉTÉ (POLICES) ---
 
 function injectSystemFonts(enable) {
   const styleId = 'nird-font-style';
@@ -18,83 +18,11 @@ function injectSystemFonts(enable) {
   }
 }
 
-function neutralizeMedia(enable) {
-  const selector = 'video, iframe, img[src*=".gif"], img[src*=".GIF"]';
-  const elements = document.querySelectorAll(selector);
-
-  elements.forEach(el => {
-    if (enable) {
-      if (el.classList.contains('nird-neutralized')) return;
-
-      if (el.tagName === 'VIDEO') {
-        el.pause();
-        el.autoplay = false;
-      }
-
-      el.style.transition = 'filter 0.3s ease';
-      el.style.filter = 'blur(10px) grayscale(100%)';
-      el.classList.add('nird-neutralized');
-
-      const wrapper = document.createElement('div');
-      wrapper.className = 'nird-wrapper';
-      wrapper.style.position = 'relative';
-      wrapper.style.display = 'inline-block';
-      
-      el.parentNode.insertBefore(wrapper, el);
-      wrapper.appendChild(el);
-
-      const overlay = document.createElement('div');
-      overlay.className = 'nird-overlay';
-      overlay.textContent = '▶️ Activer (NIRD)';
-      overlay.style.cssText = `
-        position: absolute;
-        top: 50%; left: 50%;
-        transform: translate(-50%, -50%);
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 8px 16px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-family: sans-serif;
-        cursor: pointer;
-        z-index: 9999;
-        pointer-events: auto;
-      `;
-
-      wrapper.appendChild(overlay);
-
-      const restore = (e) => {
-        e.stopPropagation();
-        e.preventDefault();
-        
-        el.style.filter = 'none';
-        if (el.tagName === 'VIDEO') el.play();
-        
-        overlay.remove();
-        el.classList.remove('nird-neutralized');
-      };
-
-      overlay.addEventListener('click', restore);
-      el.addEventListener('click', restore, { once: true });
-
-    } else {
-      if (el.classList.contains('nird-neutralized')) {
-        el.style.filter = 'none';
-        el.classList.remove('nird-neutralized');
-        
-        const wrapper = el.closest('.nird-wrapper');
-        if (wrapper) {
-          const overlay = wrapper.querySelector('.nird-overlay');
-          if (overlay) overlay.remove();
-        }
-      }
-    }
-  });
-}
+// (Supprimé) function neutralizeMedia(enable) ...
 
 function applySobrietyMode(isEnabled) {
   injectSystemFonts(isEnabled);
-  neutralizeMedia(isEnabled);
+  // neutralizeMedia(isEnabled); // DÉSACTIVÉ
 }
 
 // --- 2. MODE LECTURE ACCESSIBLE (Inclusion) ---
