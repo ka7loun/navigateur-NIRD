@@ -15,7 +15,6 @@ Notre objectif est d'offrir aux utilisateurs scolaires et citoyens un outil "cou
 L'extension intègre **7 fonctionnalités majeures**. Voici comment les tester et pourquoi elles sont essentielles.
 
 ### ♻️ PILIER : DURABILITÉ (Énergie & Matériel)
-
 *Lutter contre l'obsolescence programmée et réduire l'empreinte carbone.*
 
 | Fonctionnalité | Comment l'utiliser / Exemple | Impact NIRD |
@@ -25,7 +24,6 @@ L'extension intègre **7 fonctionnalités majeures**. Voici comment les tester e
 | **Mode Sobriété (Fonts)** | **Utilisation :** Activez "Mode Sobriété".<br>**Exemple :** Sur un blog utilisant des polices "Google Fonts" lourdes, le texte passera instantanément en police système (Arial/Segoe), plus légère. | Évite le téléchargement inutile de fichiers de polices distants. |
 
 ### 🛡️ PILIER : RESPONSABILITÉ (Données & Attention)
-
 *Protéger la vie privée et la santé mentale.*
 
 | Fonctionnalité | Comment l'utiliser / Exemple | Impact NIRD |
@@ -35,7 +33,6 @@ L'extension intègre **7 fonctionnalités majeures**. Voici comment les tester e
 | **Menu "Nettoyer et Copier"** | **Utilisation :** Clic-droit sur un lien > "Nettoyer et Copier (NIRD)".<br>**Exemple :** Sur *Amazon*, faites un clic-droit sur un produit. Collez le lien ailleurs : il est court et propre. | Facilite le partage de liens éthiques sans mouchards. |
 
 ### 🤝 PILIER : INCLUSION (Accessibilité & Pédagogie)
-
 *Rendre le numérique accessible et compréhensible.*
 
 | Fonctionnalité | Comment l'utiliser / Exemple | Impact NIRD |
@@ -74,4 +71,5 @@ Ce projet a été réalisé en simulant une méthodologie Agile professionnelle 
 4.  Cliquer sur **Charger l'extension non empaquetée** et sélectionner le dossier du projet.
 
 ---
+
 *Développé avec ❤️ pour la Nuit de l'Info - Défi NIRD.*
