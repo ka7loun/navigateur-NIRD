@@ -17,35 +17,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const NIRD_INFOS = {
     detox: {
       title: "🧘 PILIER : RESPONSABILITÉ (BIEN-ÊTRE)",
-      text: "POURQUOI ? La technologie doit être un outil, pas une addiction.\n\nSOLUTION NIRD : Un petit défi quotidien pour vous encourager à déconnecter, à reprendre le contrôle de votre temps et à réduire votre dépendance aux écrans."
+      text: "POURQUOI ? La technologie doit être un outil, pas une addiction.\n\nSOLUTION NIRD : Un petit défi quotidien pour vous encourager à déconnecter, à reprendre le contrôle de votre temps et à réduire votre dépendance aux écrans.\n\nCOMMENT L'UTILISER ? Lisez le défi affiché en haut du popup chaque matin.\n\nEXEMPLE : Si le défi est 'Pas de vidéo avant midi', essayez de tenir bon !"
     },
     durabilite: {
       title: "♻️ PILIER : DURABILITÉ",
-      text: "POURQUOI ? Le chargement de polices tierces et de médias lourds est énergivore.\n\nSOLUTION NIRD : En bloquant ces éléments, nous réduisons la consommation de bande passante et l'effort CPU, prolongeant la durée de vie de votre matériel (lutte contre l'obsolescence programmée)."
+      text: "POURQUOI ? Le chargement de polices tierces et de médias lourds est énergivore.\n\nSOLUTION NIRD : En bloquant ces éléments, nous réduisons la consommation de bande passante et l'effort CPU, prolongeant la durée de vie de votre matériel.\n\nCOMMENT L'UTILISER ? Activez l'interrupteur 'Mode Sobriété'.\n\nEXEMPLE : Sur un site d'actualités, les vidéos en lecture automatique seront floutées et mises en pause."
     },
     inclusion: {
       title: "🤝 PILIER : INCLUSION",
-      text: "POURQUOI ? Le web standard exclut souvent les personnes dyslexiques ou malvoyantes.\n\nSOLUTION NIRD : Ce mode adapte l'affichage (police, contraste) pour rendre l'information accessible à tous, garantissant l'égalité d'accès au savoir."
+      text: "POURQUOI ? Le web standard exclut souvent les personnes dyslexiques ou malvoyantes.\n\nSOLUTION NIRD : Ce mode adapte l'affichage (police, contraste) pour rendre l'information accessible à tous, garantissant l'égalité d'accès au savoir.\n\nCOMMENT L'UTILISER ? Activez l'interrupteur 'Lecture Accessible'.\n\nEXEMPLE : Tout le texte de la page passera en police 'Dyslexie-friendly' avec un fort contraste."
     },
     responsabilite: {
       title: "⚖️ PILIER : RESPONSABILITÉ",
-      text: "POURQUOI ? L'économie de l'attention exploite nos biais cognitifs pour nous captiver.\n\nSOLUTION NIRD : Le filtre bloque les mécanismes addictifs (Shorts, fils infinis) pour protéger votre santé mentale et favoriser une navigation consciente."
+      text: "POURQUOI ? L'économie de l'attention exploite nos biais cognitifs pour nous captiver.\n\nSOLUTION NIRD : Le filtre bloque les mécanismes addictifs (Shorts, fils infinis) pour protéger votre santé mentale et favoriser une navigation consciente.\n\nCOMMENT L'UTILISER ? Activez l'interrupteur 'Filtre Anti-Attention' avant d'aller sur les réseaux.\n\nEXEMPLE : Sur YouTube, les 'Shorts' et les recommandations à droite disparaîtront."
     },
     hibernation: {
       title: "♻️ PILIER : DURABILITÉ",
-      text: "POURQUOI ? Garder des onglets ouverts consomme inutilement de la RAM et de l'électricité.\n\nSOLUTION NIRD : L'hibernation automatique libère les ressources des onglets inactifs, réduisant l'empreinte énergétique globale de votre session."
+      text: "POURQUOI ? Garder des onglets ouverts consomme inutilement de la RAM et de l'électricité.\n\nSOLUTION NIRD : L'hibernation automatique libère les ressources des onglets inactifs, réduisant l'empreinte énergétique globale de votre session.\n\nCOMMENT L'UTILISER ? Activez l'interrupteur 'Hibernateur d'Onglets'.\n\nEXEMPLE : Ouvrez 10 onglets, attendez 5 minutes. Les inactifs seront 'gelés' pour ne plus consommer de batterie."
     },
     co2: {
       title: "🌍 PILIER : INCLUSION & TRANSPARENCE",
-      text: "POURQUOI ? L'impact écologique du numérique est souvent invisible pour l'utilisateur.\n\nSOLUTION NIRD : Cet indicateur rend tangible le coût carbone de chaque page visitée, éduquant l'utilisateur à l'impact de ses clics."
+      text: "POURQUOI ? L'impact écologique du numérique est souvent invisible pour l'utilisateur.\n\nSOLUTION NIRD : Cet indicateur rend tangible le coût carbone de chaque page visitée, éduquant l'utilisateur à l'impact de ses clics.\n\nCOMMENT L'UTILISER ? Regardez simplement ce chiffre se mettre à jour à chaque page.\n\nEXEMPLE : Une page texte légère fera ~0.1g, une page vidéo lourde dépassera 1g."
     },
     trackers: {
       title: "🛡️ PILIER : RESPONSABILITÉ",
-      text: "POURQUOI ? Le traçage publicitaire viole la vie privée et consomme des ressources serveur.\n\nSOLUTION NIRD : En supprimant les mouchards (trackers), nous garantissons la souveraineté de vos données et allégeons le trafic réseau."
+      text: "POURQUOI ? Le traçage publicitaire viole la vie privée et consomme des ressources serveur.\n\nSOLUTION NIRD : En supprimant les mouchards (trackers), nous garantissons la souveraineté de vos données et allégeons le trafic réseau.\n\nCOMMENT L'UTILISER ? C'est automatique ! Ou faites Clic-Droit > 'Nettoyer et Copier' sur un lien.\n\nEXEMPLE : Un lien Amazon de 5 lignes devient un lien court et propre."
     },
     medias: {
       title: "⚡ PILIER : SOBRIÉTÉ (DURABILITÉ)",
-      text: "POURQUOI ? La vidéo et les images animées représentent la majorité du trafic web mondial.\n\nSOLUTION NIRD : Neutraliser ces éléments par défaut permet une navigation 'Low-Tech' respectueuse des limites planétaires."
+      text: "POURQUOI ? La vidéo et les images animées représentent la majorité du trafic web mondial.\n\nSOLUTION NIRD : Neutraliser ces éléments par défaut permet une navigation 'Low-Tech' respectueuse des limites planétaires.\n\nCOMMENT L'UTILISER ? Ce compteur augmente quand le 'Mode Sobriété' bloque une vidéo.\n\nEXEMPLE : Si le chiffre monte à 5, vous avez économisé le chargement de 5 vidéos inutiles."
     }
   };
 

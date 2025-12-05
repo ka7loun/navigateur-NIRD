@@ -10,93 +10,49 @@ Notre objectif est d'offrir aux utilisateurs scolaires et citoyens un outil "cou
 
 ---
 
-## I. Fonctionnalités & Impact NIRD
+## I. Fonctionnalités, Utilisation & Impact
 
-L'extension intègre **7 fonctionnalités majeures**, couvrant tous les aspects de la sobriété numérique.
+L'extension intègre **7 fonctionnalités majeures**. Voici comment les tester et pourquoi elles sont essentielles.
 
 ### ♻️ PILIER : DURABILITÉ (Énergie & Matériel)
 
-L'objectif est de réduire l'empreinte carbone et de lutter contre l'obsolescence programmée en allégeant la charge sur les ordinateurs.
+*Lutter contre l'obsolescence programmée et réduire l'empreinte carbone.*
 
-| Fonctionnalité | Description Technique | Impact Concret |
+| Fonctionnalité | Comment l'utiliser / Exemple | Impact NIRD |
 | :--- | :--- | :--- |
-| **Nettoyeur d'Énergie** | Force l'utilisation de polices système (Arial, etc.) et remplace les médias lourds (GIFs, Vidéos) par des placeholders. | Réduit la bande passante et la charge CPU. Prolonge la batterie et la vie des vieux PC. |
-| **Hibernateur d'Onglets** | Décharge (discard) automatiquement les onglets inactifs depuis > 5 min. | Libère la mémoire RAM instantanément. Indispensable pour les navigateurs gourmands. |
-| **Mode Sobriété (Blur)** | Applique un flou + N&B sur les médias. Bouton "Click-to-Play" pour activer. | Empêche le chargement inutile de contenu et sensibilise visuellement à la consommation. |
+| **Nettoyeur d'Énergie** | **Utilisation :** Activez "Mode Sobriété" dans le popup.<br>**Exemple :** Allez sur *Giphy.com* ou un site de news. Les vidéos/GIFs sont floutés et mis en pause. Cliquez sur "▶️ Activer" pour les voir. | Réduit la bande passante et la charge CPU. Prolonge la batterie et la vie des vieux PC. |
+| **Hibernateur d'Onglets** | **Utilisation :** Activez "Hibernateur d'Onglets".<br>**Exemple :** Ouvrez 5 onglets lourds (YouTube, Maps...) et n'y touchez plus pendant 10 min. Ils seront "déchargés" (grisés) pour libérer la mémoire. | Libère la mémoire RAM instantanément. Indispensable pour les navigateurs gourmands. |
+| **Mode Sobriété (Fonts)** | **Utilisation :** Activez "Mode Sobriété".<br>**Exemple :** Sur un blog utilisant des polices "Google Fonts" lourdes, le texte passera instantanément en police système (Arial/Segoe), plus légère. | Évite le téléchargement inutile de fichiers de polices distants. |
 
 ### 🛡️ PILIER : RESPONSABILITÉ (Données & Attention)
 
-L'objectif est de protéger la vie privée et la santé mentale des utilisateurs face aux géants du web.
+*Protéger la vie privée et la santé mentale.*
 
-| Fonctionnalité | Description Technique | Impact Concret |
+| Fonctionnalité | Comment l'utiliser / Exemple | Impact NIRD |
 | :--- | :--- | :--- |
-| **Bouclier de Confidentialité** | Intercepte les clics et supprime les paramètres de tracking (`utm_`, `gclid`) avant la navigation. | Empêche le pistage publicitaire inter-sites. Vos données restent privées. |
-| **Filtre Anti-Attention** | Masque les éléments addictifs (Shorts, fils infinis, recommandations) sur YouTube/FB/LinkedIn via CSS. | Protège contre la captologie. Favorise une recherche d'information intentionnelle et non subie. |
-| **Challenge Détox** | Affiche un défi quotidien aléatoire ("Pas de vidéo avant midi") dans le popup. | Encourage la déconnexion et le changement de comportement (Tech for Good). |
+| **Bouclier de Confidentialité** | **Utilisation :** Automatique au clic.<br>**Exemple :** Cliquez sur un lien avec `?utm_source=facebook`. L'extension nettoie l'URL *avant* que la page ne charge. Vérifiez la barre d'adresse : les paramètres ont disparu. | Empêche le pistage publicitaire inter-sites. Vos données restent privées. |
+| **Filtre Anti-Attention** | **Utilisation :** Activez "Filtre Anti-Attention".<br>**Exemple :** Allez sur *YouTube.com*. La section "Shorts" et les recommandations infinies sur le côté ont disparu. Vous ne voyez que votre vidéo. | Protège contre la captologie. Favorise une recherche d'information intentionnelle et non subie. |
+| **Menu "Nettoyer et Copier"** | **Utilisation :** Clic-droit sur un lien > "Nettoyer et Copier (NIRD)".<br>**Exemple :** Sur *Amazon*, faites un clic-droit sur un produit. Collez le lien ailleurs : il est court et propre. | Facilite le partage de liens éthiques sans mouchards. |
 
 ### 🤝 PILIER : INCLUSION (Accessibilité & Pédagogie)
 
-L'objectif est de rendre le numérique accessible à tous et de rendre visible l'impact invisible du web.
+*Rendre le numérique accessible et compréhensible.*
 
-| Fonctionnalité | Description Technique | Impact Concret |
+| Fonctionnalité | Comment l'utiliser / Exemple | Impact NIRD |
 | :--- | :--- | :--- |
-| **Mode Lecture Accessible** | Change la police pour une version "Dyslexie-friendly" (Comic Sans/OpenDyslexic) et augmente le contraste. | Permet aux personnes dyslexiques ou malvoyantes de naviguer confortablement sur n'importe quel site. |
-| **Éco-Tagger (CO2)** | Calcule en temps réel le poids de la page (Ressources API) et estime les grammes de CO2 émis. | **Rend visible l'invisible.** Sensibilise l'utilisateur au coût écologique de chaque clic. |
-| **Outils Pédagogiques** | Des info-bulles ℹ️ expliquent chaque fonctionnalité avec le pilier NIRD associé. | Transforme l'outil en support éducatif pour comprendre les enjeux du numérique. |
+| **Mode Lecture Accessible** | **Utilisation :** Activez "Lecture Accessible".<br>**Exemple :** Sur *Wikipedia*, le texte devient plus gros, plus contrasté, et utilise une police adaptée aux dyslexiques (type Comic Sans). | Permet aux personnes dyslexiques ou malvoyantes de naviguer confortablement. |
+| **Éco-Tagger (CO2)** | **Utilisation :** Ouvrez le popup sur n'importe quelle page.<br>**Exemple :** Regardez le compteur "🌍 CO2". Rechargez une page lourde (vidéo 4K) vs une page légère (texte). Le chiffre augmente en temps réel. | **Rend visible l'invisible.** Sensibilise l'utilisateur au coût écologique de chaque clic. |
+| **Challenge Détox** | **Utilisation :** Regardez en haut du popup.<br>**Exemple :** Chaque jour, un nouveau défi apparaît (ex: "Pas d'écran pendant le repas"). Essayez de le relever ! | Encourage la déconnexion et le changement de comportement (Tech for Good). |
 
 ---
 
-## II. Architecture & Transparence (Permissions)
+## II. Architecture & Transparence
 
-Nous nous engageons à une transparence totale sur les permissions demandées (Manifest V3).
+Le projet respecte les standards modernes de Chrome (Manifest V3).
 
-| Permission | Justification (Pourquoi ?) |
-| :--- | :--- |
-| `storage` | Pour sauvegarder vos préférences (état des interrupteurs) et vos compteurs d'impact localement. |
-| `scripting` | Pour modifier le style des pages (polices, flou, filtres) et injecter le script de nettoyage. |
-| `activeTab` | Pour interagir uniquement avec l'onglet que vous visitez, sans surveiller tout votre historique. |
-| `contextMenus` | Pour ajouter l'option "Nettoyer et Copier le Lien" au clic-droit. |
-| `alarms` | Pour vérifier périodiquement les onglets inactifs et déclencher l'hibernation. |
-
----
-
-## III. Guide d'Installation
-
-### 1. Prérequis
-*   Un navigateur basé sur Chromium (Google Chrome, Microsoft Edge, Brave, Vivaldi).
-*   Git (optionnel, pour cloner) ou simplement télécharger le ZIP.
-
-### 2. Installation (Mode Développeur)
-1.  **Récupérer le code** :
-    *   Via Git : `git clone https://github.com/ka7loun/navigateur-NIRD.git`
-    *   Ou télécharger le ZIP depuis GitHub et l'extraire.
-2.  **Ouvrir la gestion des extensions** :
-    *   Tapez `chrome://extensions` dans la barre d'adresse.
-3.  **Activer le mode développeur** :
-    *   En haut à droite de la page, basculez l'interrupteur **"Mode développeur"**.
-4.  **Charger l'extension** :
-    *   Cliquez sur le bouton **"Charger l'extension non empaquetée"** (en haut à gauche).
-    *   Sélectionnez le dossier `navigateur-NIRD` (celui qui contient le fichier `manifest.json`).
-5.  **C'est prêt !** L'icône NIRD apparaît dans votre barre d'outils.
-
----
-
-## IV. Fonctionnement & Utilisation
-
-Une fois installée, cliquez sur l'icône de l'extension pour ouvrir le **Tableau de Bord**.
-
-### 1. Activer les Modes
-*   **Mode Sobriété** : Activez-le pour bloquer les vidéos/GIFs et simplifier les polices. Idéal pour économiser de la batterie.
-*   **Lecture Accessible** : Activez-le si vous avez du mal à lire le texte. La police s'adapte instantanément.
-*   **Filtre Anti-Attention** : Activez-le avant d'aller sur YouTube ou les réseaux sociaux pour ne pas vous faire piéger par les algorithmes.
-*   **Hibernateur** : Laissez-le activé pour que vos onglets en arrière-plan arrêtent de consommer de la mémoire.
-
-### 2. Nettoyer un Lien
-*   **Automatique** : Cliquez simplement sur n'importe quel lien. Si un tracker est détecté, il sera supprimé avant le chargement.
-*   **Manuel** : Faites un **clic-droit** sur un lien > Sélectionnez **"Nettoyer et Copier le Lien (NIRD)"**. Le lien propre est copié dans votre presse-papier.
-
-### 3. Suivre son Impact
-*   Regardez la section **Impact Écologique** pour voir combien de grammes de CO2 la page actuelle a consommé et combien de mouchards vous avez bloqués !
+*   **Permissions Minimales** : `storage` (prefs), `scripting` (CSS/JS), `activeTab` (action), `contextMenus` (clic-droit), `alarms` (hibernation).
+*   **Performance** : Code natif léger, pas de librairie externe lourde.
+*   **Confidentialité** : Tout le traitement se fait en local.
 
 ---
 
@@ -107,6 +63,15 @@ Ce projet a été réalisé en simulant une méthodologie Agile professionnelle 
 *   **🥇 Account 1 (`ka7loun`)** : Chef de Projet, Architecture, Dashboard, Eco-Tagger.
 *   **🎨 Account 2 (`ahmed0219`)** : Front-End, Accessibilité, Design.
 *   **🛡️ Account 3 (`adeemmm23`)** : Sécurité, Filtres, Performance.
+
+---
+
+## III. Installation
+
+1.  **Cloner le dépôt :** `git clone https://github.com/ka7loun/navigateur-NIRD.git`
+2.  **Accéder à `chrome://extensions`** dans votre navigateur (Chrome/Brave/Edge).
+3.  Activer le **Mode développeur** (interrupteur en haut à droite).
+4.  Cliquer sur **Charger l'extension non empaquetée** et sélectionner le dossier du projet.
 
 ---
 *Développé avec ❤️ pour la Nuit de l'Info - Défi NIRD.*
