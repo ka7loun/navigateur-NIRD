@@ -55,11 +55,9 @@ Le projet respecte les standards modernes de Chrome (Manifest V3).
 
 ## 🧑‍💻 Structure de l'Équipe NIRD
 
-Ce projet a été réalisé en simulant une méthodologie Agile professionnelle avec 3 développeurs distincts, utilisant Git Flow (Feature Branching, Pull Requests).
+Ce projet a été réalisé dans le cadre de la Nuit de l'Info 2024 par :
 
-*   **🥇 Account 1 (`ka7loun`)** : Chef de Projet, Architecture, Dashboard, Eco-Tagger.
-*   **🎨 Account 2 (`ahmed0219`)** : Front-End, Accessibilité, Design.
-*   **🛡️ Account 3 (`adeemmm23`)** : Sécurité, Filtres, Performance.
+*   **🥇 `ka7loun`** : Développement Full-Stack & Architecture.
 
 ---
 
