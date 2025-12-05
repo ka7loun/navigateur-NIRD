@@ -15,6 +15,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalClose = document.getElementById('modalClose');
 
   const NIRD_INFOS = {
+    detox: {
+      title: "🧘 PILIER : RESPONSABILITÉ (BIEN-ÊTRE)",
+      text: "POURQUOI ? La technologie doit être un outil, pas une addiction.\n\nSOLUTION NIRD : Un petit défi quotidien pour vous encourager à déconnecter, à reprendre le contrôle de votre temps et à réduire votre dépendance aux écrans."
+    },
     durabilite: {
       title: "♻️ PILIER : DURABILITÉ",
       text: "POURQUOI ? Le chargement de polices tierces et de médias lourds est énergivore.\n\nSOLUTION NIRD : En bloquant ces éléments, nous réduisons la consommation de bande passante et l'effort CPU, prolongeant la durée de vie de votre matériel (lutte contre l'obsolescence programmée)."
@@ -122,5 +126,26 @@ document.addEventListener('DOMContentLoaded', () => {
       chrome.storage.local.set({ hibernateMode: isEnabled });
       if (isEnabled) chrome.runtime.sendMessage({ action: "triggerHibernation" });
     });
+  }
+
+  // --- 3. CHALLENGE DETOX DU JOUR ---
+  const challenges = [
+    "Ne regardez aucune vidéo avant midi aujourd'hui.",
+    "Désactivez les notifications pour les 2 prochaines heures.",
+    "Faites une pause de 5 minutes sans écran toutes les heures.",
+    "N'ouvrez pas plus de 5 onglets simultanément.",
+    "Évitez les réseaux sociaux jusqu'à ce soir.",
+    "Lisez un article en entier sans scroller ailleurs.",
+    "Nettoyez votre boîte mail pendant 10 minutes."
+  ];
+
+  const today = new Date().toDateString();
+  // Pseudo-aléatoire basé sur la date pour que tout le monde ait le même challenge le même jour
+  const seed = today.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
+  const challengeIndex = seed % challenges.length;
+  
+  const challengeElement = document.getElementById('detoxChallenge');
+  if (challengeElement) {
+    challengeElement.textContent = `"${challenges[challengeIndex]}"`;
   }
 });
