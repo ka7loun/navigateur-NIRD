@@ -151,6 +151,28 @@ document.addEventListener('click', (event) => {
 
 
 // --- 5. ÉCO-TAGGER (Calcul CO2) ---
+// Based on Sustainable Web Design Model (SWDM) v4
+// Source: https://sustainablewebdesign.org/estimating-digital-emissions/
+// Data sources: IEA 2022, Malmodin 2023, ITU 2023, Ember 2024
+
+const SWDM_CONFIG = {
+  // Energy intensity per GB (kWh/GB) - from IEA 2022 & Malmodin 2023
+  operational: {
+    dataCenter: 0.055,
+    network: 0.059,
+    userDevice: 0.080
+  },
+  embodied: {
+    dataCenter: 0.012,
+    network: 0.013,
+    userDevice: 0.081
+  },
+  // Global average grid carbon intensity (gCO2e/kWh) - Ember 2024
+  gridIntensity: 494,
+  // Caching assumptions for returning visitors
+  returnVisitorRatio: 0.75,
+  dataCacheRatio: 0.02
+};
 
 function calculateCarbonFootprint() {
   const resources = performance.getEntriesByType('resource');
@@ -162,10 +184,29 @@ function calculateCarbonFootprint() {
     }
   });
 
-  const totalMB = totalBytes / (1024 * 1024);
-  const co2grams = totalMB * 0.4; 
+  // Add document size estimate (HTML)
+  const docSize = new Blob([document.documentElement.outerHTML]).size;
+  totalBytes += docSize;
 
-  return co2grams;
+  const totalGB = totalBytes / (1024 * 1024 * 1024);
+
+  // Calculate operational emissions (gCO2e)
+  const opDataCenter = totalGB * SWDM_CONFIG.operational.dataCenter * SWDM_CONFIG.gridIntensity;
+  const opNetwork = totalGB * SWDM_CONFIG.operational.network * SWDM_CONFIG.gridIntensity;
+  const opUserDevice = totalGB * SWDM_CONFIG.operational.userDevice * SWDM_CONFIG.gridIntensity;
+  const operationalEmissions = opDataCenter + opNetwork + opUserDevice;
+
+  // Calculate embodied emissions (gCO2e)
+  const emDataCenter = totalGB * SWDM_CONFIG.embodied.dataCenter * SWDM_CONFIG.gridIntensity;
+  const emNetwork = totalGB * SWDM_CONFIG.embodied.network * SWDM_CONFIG.gridIntensity;
+  const emUserDevice = totalGB * SWDM_CONFIG.embodied.userDevice * SWDM_CONFIG.gridIntensity;
+  const embodiedEmissions = emDataCenter + emNetwork + emUserDevice;
+
+  // Total emissions per page view
+  const totalEmissions = operationalEmissions + embodiedEmissions;
+
+  // Convert to grams (already in gCO2e)
+  return totalEmissions;
 }
 
 function sendEcoStats() {
